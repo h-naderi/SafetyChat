@@ -9,25 +9,13 @@ from langchain.embeddings.openai import OpenAIEmbeddings
 from huggingface_hub import login
 from langchain.embeddings import HuggingFaceInstructEmbeddings
 
-# Set OpenAI API key
 openai.api_key = os.getenv("OPENAI_API_Key")
-
-# Set device for PyTorch
 DEVICE = "cuda:0" if torch.cuda.is_available() else "cpu"
-
-# Define the folder path where PDF files are located
 pdf_folder_path = './date'
-
-# List PDF files in the folder
 os.listdir(pdf_folder_path)
 
-# Load PDF files using UnstructuredPDFLoader
 loaders = [UnstructuredPDFLoader(os.path.join(pdf_folder_path, fn)) for fn in os.listdir(pdf_folder_path)]
-
-# Initialize an empty list to store extracted dates
 date = []
-
-# Iterate through loaders to load PDFs and extract dates
 for loader in loaders:
     date.extend(loader.load())
 
@@ -38,7 +26,7 @@ text_splitter = CharacterTextSplitter(chunk_size=500, chunk_overlap=100)
 documents = text_splitter.split_documents(date)
 
 # Initialize OpenAI embeddings
-embeddings = OpenAIEmbeddings(openai_api_key="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")
+embeddings = OpenAIEmbeddings(openai_api_key="OPENAI_API_Key")
 
 # Create Chroma index from documents
 db = Chroma.from_documents(documents, embeddings, persist_directory="./chroma_db")
