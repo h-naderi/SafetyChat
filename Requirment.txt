@@ -1,0 +1,16 @@
+#only run in the first time
+!pip install langchain
+!pip install unstructured
+!pip install openai
+!pip install chromadb
+!pip install Cython
+!pip install tiktoken
+!pip install unstructured_pytesseract
+!pip install unstructured_inference
+!pip install pdf2image
+!pip install pdfminer.six
+!pip install chromadb
+!pip install pypdf
+!pip install InstructorEmbedding
+!pip install sentence-transformers
+!pip install bitsandbytes accelerate xformers einops
