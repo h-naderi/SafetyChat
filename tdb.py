@@ -16,7 +16,7 @@ openai.api_key = os.getenv("OPENAI_API_Key")
 DEVICE = "cuda:0" if torch.cuda.is_available() else "cpu"
 
 # Define the folder path where PDF files are located
-pdf_folder_path = './date'
+pdf_folder_path = './dateset1'
 
 # List PDF files in the folder
 os.listdir(pdf_folder_path)
@@ -31,14 +31,26 @@ date = []
 for loader in loaders:
     date.extend(loader.load())
 
+# Login to Hugging Face model repository
+login(token=os.getenv("Huggingface"))
+
+# Initialize HuggingFace embeddings
+embeddings = HuggingFaceInstructEmbeddings(cache_folder="./embeddings", model_name="sentence-transformers/all-MiniLM-L6-v2", model_kwargs={"device": DEVICE})
+
 # Initialize text splitter for breaking down documents into chunks
-text_splitter = CharacterTextSplitter(chunk_size=500, chunk_overlap=100)
+text_splitter = CharacterTextSplitter(chunk_size=2000, chunk_overlap=1000)
 
 # Split documents into chunks
 documents = text_splitter.split_documents(date)
 
-# Initialize OpenAI embeddings
-embeddings = OpenAIEmbeddings(openai_api_key="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")
-
 # Create Chroma index from documents
 db = Chroma.from_documents(documents, embeddings, persist_directory="./chroma_db")
+
+# Create Chroma instance using persisted data
+db3 = Chroma(persist_directory="./chroma_db", embedding_function=embeddings)
+
+# Perform similarity search
+docs = db3.similarity_search("Occupational Safety and Health Admin")
+
+# Print most similar document
+print(docs[0])
