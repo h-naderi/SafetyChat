@@ -11,59 +11,121 @@
 
 <body class="bg-gray-100 font-sans">
 
-    <!-- Navigation Tab -->
-<!--    <nav class="bg-gray-800 p-4">-->
-<!--        <div class="container mx-auto flex items-center justify-between">-->
-<!--            <div class="text-white text-xl font-semibold">-->
-<!--                Chatbots-->
-<!--            </div>-->
-<!--            <ul class="flex items-center space-x-4">-->
-<!--                <li><a href="/distilgpt2_chat" class="text-white hover:text-gray-400">Chatbot with GPT-2</a></li>-->
-<!--                <li><a href="/dialo_gpt_chat" class="text-white hover:text-gray-400">Chatbot with DialoGPT</a></li>-->
-<!--                <li><a href="/" class="text-white hover:text-gray-400">Chatbot with Mistral (7B)</a></li>-->
-<!--                <li><a href="/gpt4" class="text-white hover:text-gray-400">Chatbot with GPT-4</a></li>-->
-<!--            </ul>-->
-<!--        </div>-->
-<!--    </nav>-->
-
-    <div class="max-w-xl mx-auto my-10 bg-white rounded-lg overflow-hidden shadow-lg">
-        <div class="flex border-t p-4">
-            <input type="text" id="background_input" placeholder="Type in your personal info..." class="flex-1 p-2 border rounded mr-4">
-            <button onclick="sendBackground()" class="px-4 py-2 bg-green-500 text-white rounded">Send</button>
+    <!-- Intro Tab -->
+    <div class="max-w-6xl mx-auto my-0 bg-white rounded-lg overflow-hidden shadow-lg">
+        <div class="flex border-t p4" style="height: 100px; overflow-y: auto;">
+            <div class = "text-black text-center my-5 text-2xl font-semibold ml-5">
+                SafetyChat
+            </div>
+            <img class = "ml-1 my-3" src="https://cdn.discordapp.com/attachments/1154992681936748601/1171556449537769552/image.png?ex=655d1bf8&is=654aa6f8&hm=5fcff703f65eda826ebf7b14b17c75e1ddfc1505cf219de4a698d080fc1034be&" style="width:50px;height:50px;">
         </div>
-    </div>
-
-    <div class="max-w-xl mx-auto my-15 bg-white rounded-lg overflow-hidden shadow-lg">
+        <div class = "text-black text-center my-3", style="font-size: 150%;">
+            Welcome to SafetyChat. I'm your Safety Assistant for your today's task. Go following steps to ensure being safe
+        </div>
+        <div class = "text-black text-center", style="font-size: 125%;">
+            1-Select Construction Tasks in the dropdown list.
+        </div>
+        <div class = "text-black text-center", style="font-size: 125%;">
+            2-If your task is not in the dropdown list, write it in field 2.
+        </div>
+        <div class = "text-black text-center", style="font-size: 125%;">
+            3-Respond to the hypothetical scenario given to the best of your ability and learn from the feedback given to you.
+        </div>
+        <div class = "my-3">
+        </div>
+        <div class="flex border-t p-4" style="height: 100px; overflow-y: auto;">
+            <div class = "text-black text-center my-5 ml-5", style="font-size: 125%;">
+                1. Select your Construction Tasks.
+            </div>
+            <select id = "personal_1" class="flex-1 p-2 border rounded ml-3 mt-2" style="height: 50px;">
+                <option selected></option>
+                <option value="Working on roofs">Working on roofs</option>
+                <option value="Erecting walls">Erecting walls</option>
+                <option value="Working on leading edges">Working on leading edges</option>
+                <option value="Floor joist installation">Floor joist installation</option>
+            </select>
+        </div>
+        <div class="flex p-4" style="height: 100px; overflow-y: auto;">
+            <div class = "text-black text-center my-5 ml-5", style="font-size: 125%;">
+                2. Enter Your Construction Tasks.
+            </div>
+            <input type="text" id="personal_2" placeholder="Eg. Confined Space Work" class="flex-1 p-2 border rounded ml-3 mt-2"; style="height: 50px;">
+        </div>
         <div class="flex border-t p-4">
-            <input type="text" id="daily_input" placeholder="Type in your daily tasks..." class="flex-1 p-2 border rounded mr-4">
-            <button onclick="sendDaily()" class="px-4 py-2 bg-green-500 text-white rounded">Send</button>
+            <button onclick="sendAll()" class="px-4 py-2 bg-green-500 text-white rounded">Send</button>
         </div>
     </div>
 
     <!-- Chatbot Container -->
-    <div class="max-w-xl mx-auto my-20 bg-white rounded-lg overflow-hidden shadow-lg">
-        <div class="bg-blue-500 text-white p-4 text-center text-2xl font-semibold">
-            Welcome to our Chatbot!
+    <div class="flex border-t p-4">
+        <!--Scenario Messages-->
+        <div class="max-w-xl mx-0 my-20 bg-white rounded-lg overflow-hidden shadow-lg" id="chatpane" style="display: none; width: 600px">
+            <div class="bg-blue-500 text-white p-4 text-center text-2xl font-semibold">
+                SafteyChat Scenarios
+            </div>
+            <div class="p-6" id="messages" style="height: 500px; overflow-y: auto;">
+                <!-- Messages will be appended here -->
+            </div>
+            <div class="flex border-t p-4">
+                <button onclick="evalAnswer()" class="px-4 py-2 bg-green-500 text-white rounded">Answer</button>
+            </div>
         </div>
-        <div class="p-6" id="messages" style="height: 500px; overflow-y: auto;">
-            <!-- Messages will be appended here -->
+
+        <!--Feedback Messages-->
+        <div class="max-w-xl ml-auto my-20 bg-white rounded-lg overflow-hidden shadow-lg" id="feedbackpane" style="display: none; width: 600px">
+            <div class="bg-blue-500 text-white p-4 text-center text-2xl font-semibold">
+                SafteyChat Feedback
+            </div>
+            <div class="p-6" id="feedback" style="height: 500px; overflow-y: auto;">
+                <!-- Messages will be appended here -->
+            </div>
+            <div class="flex border-t p-4">
+                <input type="text" id="input" placeholder="Type a message..." class="flex-1 p-2 border rounded mr-4">
+                <button onclick="sendMessage()" class="px-4 py-2 bg-green-500 text-white rounded">Send</button>
+            </div>
         </div>
-        <div class="flex border-t p-4">
-            <input type="text" id="input" placeholder="Type a message..." class="flex-1 p-2 border rounded mr-4">
-            <button onclick="sendMessage()" class="px-4 py-2 bg-green-500 text-white rounded">Send</button>
+    </div>
+
+    <!--Records the Score-->
+    <div class="flex p-4">
+        <div class="max-w-xl mx-auto my-20 bg-white rounded-lg overflow-hidden shadow-lg" id=scorepane style="display: none; width: 600px">
+            <div class="bg-blue-500 text-white p-4 text-center text-2xl font-semibold">
+                Total Score:
+            </div>
+            <div class="bg-blue-500 text-white p-4 text-center text-2xl font-semibold" id="scorebox">
+                0
+            </div>
         </div>
     </div>
 
 
     <script>
         const messagesDiv = document.getElementById('messages');
+        const feedbackDiv = document.getElementById('feedback')
         const input = document.getElementById('input');
-        const background_input = document.getElementById('background_input');
-        const daily_input = document.getElementById('daily_input');
-        const bg = '';
-        const d_tasks = '';
+        const personal_1 = document.getElementById('personal_1');
+        const personal_2 = document.getElementById('personal_2');
+        const chatpane = document.getElementById('chatpane');
+        const feedbackpane = document.getElementById('feedbackpane');
+        const scorepane = document.getElementById('scorepane');
+        const scorebox = document.getElementById('scorebox');
+        var tasks = '';
+        var current_question = '';
+        var current_answer = '';
+        var current_feedback = '';
+        var contents = [];
+        var prev_question = '';
+        var prev_answer = '';
+        var prev_content = [];
+        var message_history = [];
+        const ip = 'http://34.228.92.210:5011';
+        var correctly_answered = 0;
+        //Global Variables
 
         function addMessage(content, className, avatar) {
+            //Takes content (string), className (sting) and avatar (string)
+            //adds a message to the scenario pane with an avatar reflected by the avatar string and with text content from content
+            //classname determines if any additions are needed for the style of div.
             const messageDiv = document.createElement('div');
             messageDiv.className = `flex my-2 ${className}`;
 
@@ -72,8 +134,9 @@
             avatarDiv.textContent = avatar;
 
             const textDiv = document.createElement('div');
-            textDiv.className = 'p-2 rounded bg-blue-100 text-blue-800';
+            textDiv.className = 'width p-2 rounded bg-blue-100 text-blue-800';
             textDiv.textContent = content;
+            textDiv.style.fontSize = "120%"
 
             if (className === 'flex-row-reverse') {
                 messageDiv.appendChild(textDiv);
@@ -87,7 +150,10 @@
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
 
-        function addImage(content, className, avatar) {
+        function addFeedback(content, className, avatar) {
+            //Takes content (string), className (sting) and avatar (string)
+            //adds a message to the feedback pane with an avatar reflected by the avatar string and with text content from content
+            //classname determines if any additions are needed for the style of div.
             const messageDiv = document.createElement('div');
             messageDiv.className = `flex my-2 ${className}`;
 
@@ -95,69 +161,243 @@
             avatarDiv.className = 'w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center mr-3';
             avatarDiv.textContent = avatar;
 
-            const imgDiv = document.createElement('img');
-            imgDiv.className = 'p-2 rounded bg-blue-100';
-            imgDiv.src = content;
+            const textDiv = document.createElement('div');
+            textDiv.className = 'width p-2 rounded bg-blue-100 text-blue-800';
+            textDiv.textContent = content;
+            textDiv.style.fontSize = "120%"
 
-            messageDiv.appendChild(avatarDiv);
-            messageDiv.appendChild(imgDiv);
+            if (className === 'flex-row-reverse') {
+                messageDiv.appendChild(textDiv);
+                messageDiv.appendChild(avatarDiv);
+            } else {
+                messageDiv.appendChild(avatarDiv);
+                messageDiv.appendChild(textDiv);
+            }
 
-            messagesDiv.appendChild(messageDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            feedbackDiv.appendChild(messageDiv);
+            feedbackDiv.scrollTop = feedbackDiv.scrollHeight;
         }
 
-        function sendBackground() {
-            const userMessage = background_input.value;
-            if (!userMessage) return;
-
-            bg = userMessage
+        function updateScore() {
+            //updates the value of the scorebox based on the number of correctly answered scenarios
+            scorebox.textContent = ''+correctly_answered;
         }
 
-        function sendDaily() {
-            const userMessage = daily_input.value;
-            if (!userMessage) return;
+        function evalAnswer() {
+            //code for evaluating the answer, creating feedback and creating a new scenario
+            var choice = '';
+            for (let i = 0; i < contents.length; i++) {
+                const inputDiv = document.getElementById('answer' + i);
+                if (inputDiv.checked){
+                    addMessage(inputDiv.value, 'flex-row-reverse', 'U');
+                    choice = contents[i];
+                    if (inputDiv.value == current_answer.substring(0,1)) {
+                        correctly_answered = correctly_answered+1;
+                        addMessage('You correctly responded to the scenario! Check the feedback pane to expand on why you answered correctly.', '', 'S');
+                    }else{
+                        addMessage('You responded incorrectly to the scenario! Check the feedback pane for the explaination for the correct answer.', '', 'S');
+                    }
+                    addMessage('Your current score is : ' + correctly_answered, '', 'S');
+                    updateScore();
+                }
+                inputDiv.disabled = true;
+                inputDiv.id = 'notinuse';
+                inputDiv.name = 'notinuse';
+            }
+            message_history.push(choice);
+            //checks to see which radio button is selected and its corresponding value. If this matches the correct
+            //answer, a point is added and the score pane is updated. Finally, the choice is pushed to the chat history
+            //this also disables the previous radio buttons
 
-            d_tasks = userMessage
-        }
-
-        function sendMessage() {
-            const userMessage = input.value;
-            if (!userMessage) return;
-
-            addMessage(userMessage, 'flex-row-reverse', 'U');
+            feedbackpane.style.display = 'block';
 
             const loadingDiv = document.createElement('div');
             loadingDiv.className = 'flex';
 
             const avatarDiv = document.createElement('div');
             avatarDiv.className = 'w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center mr-3';
-            avatarDiv.textContent = 'B';
+            avatarDiv.textContent = 'S';
 
             const textDiv = document.createElement('div');
-            textDiv.className = 'p-2 rounded bg-green-100 text-green-800';
+            textDiv.className = 'width p-2 rounded bg-green-100 text-green-800';
+            textDiv.innerHTML = '<span class="dot">•</span><span class="dot">•</span><span class="dot">•</span>';
+            //loading screen for backend input.
+
+            loadingDiv.appendChild(avatarDiv);
+            loadingDiv.appendChild(textDiv);
+            feedbackDiv.appendChild(loadingDiv);
+
+            //calls feedback in the backend
+            fetch(ip + '/feedback', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ optiona: contents[0], optionb: contents[1], optionc: contents[2], choice: choice, scenario: current_question, Right_Answer: current_answer}),
+                //Takes the options, the choice made, the scenario and the correct answer to create feedback.
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    feedbackDiv.removeChild(loadingDiv);
+                    current_feedback = data.Feedback;
+                    //gets the feedback and posts it to the pane alongside a message recommending the user to ask questions.
+                    addFeedback(data.Feedback, '', 'S');
+                    addFeedback('If you have any questions regarding the most recent feedback, feel free to ask below.', '', 'S');
+                })
+                .catch((error) => {
+                    console.error('There was an error!', error);
+                });
+
+            addMessage('Here\'s a new scenario for you to consider:', '', 'S');
+            //begin creating a new scenario.
+
+            const newloadingDiv = document.createElement('div');
+            newloadingDiv.className = 'flex';
+
+            const newavatarDiv = document.createElement('div');
+            newavatarDiv.className = 'w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center mr-3';
+            newavatarDiv.textContent = 'S';
+
+            const newtextDiv = document.createElement('div');
+            newtextDiv.className = 'width p-2 rounded bg-green-100 text-green-800';
+            newtextDiv.innerHTML = '<span class="dot">•</span><span class="dot">•</span><span class="dot">•</span>';
+            //loading screen for waiting on scenario.
+
+            newloadingDiv.appendChild(newavatarDiv);
+            newloadingDiv.appendChild(newtextDiv);
+
+            messagesDiv.appendChild(newloadingDiv);
+
+            fetch(ip + '/combinetwo', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ projects: tasks, historys: message_history}),
+                //sends the contruction tasks and the chat history
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    //similar to the combinetwo call in sendAll, this updates the current scenario and
+                    //answers as well as adding them to the scenario pane. It also pushes the current question to our
+                    //chat history. We also store the previous scenario so that users can ask questions related to the
+                    //most recent feedback in the feedback pane.
+                    messagesDiv.removeChild(newloadingDiv);
+                    addMessage(data.scenario, '', 'S');
+                    prev_question = current_question;
+                    current_question = data.scenario;
+                    message_history.push(current_question)
+                    prev_content = contents;
+                    contents = [data.A, data.B, data.C];
+                    addAnswer(contents, '', 'S');
+                    prev_answer = current_answer;
+                    current_answer = data.Right_Answer;
+                })
+                .catch((error) => {
+                    console.error('There was an error!', error);
+                });
+        }
+
+        function addAnswer(contents, className, avatar) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `flex my-2 ${className}`;
+
+            const avatarDiv = document.createElement('div');
+            avatarDiv.className = 'w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center mr-3';
+            avatarDiv.textContent = avatar;
+
+            const textDiv = document.createElement('div');
+            textDiv.className = 'width p-2 rounded bg-blue-100 text-blue-800';
+
+            for (let i = 0; i < contents.length; i++) {
+                const inputDiv = document.createElement('input');
+                inputDiv.type = 'radio';
+                const inputID = 'answer' + i;
+                inputDiv.id = inputID;
+                inputDiv.name = 'radioanswers';
+                if (i==0){
+                    inputDiv.value = 'A';
+                }else if (i==1){
+                    inputDiv.value = 'B';
+                }else{
+                    inputDiv.value = 'C';
+                }
+                const inputLabel = document.createElement('label');
+                inputLabel.htmlFor = inputID;
+                inputLabel.style.fontSize="120%"
+                var optionstr = 'A'
+                if (i==1){
+                    optionstr = 'B'
+                }else if (i==2){
+                    optionstr = 'C'
+                }
+                const description = document.createTextNode(optionstr+ ' '+contents[i]);
+                inputLabel.appendChild(description);
+                const newline = document.createElement('br');
+                textDiv.appendChild(inputDiv);
+                textDiv.appendChild(inputLabel);
+                textDiv.appendChild(newline);
+            }
+            //creates a message in the scenario pane with three radio buttons, each a possible response to our scenario
+            //they are grouped by the name radioanswers and as such, only one can be selected from the three.
+
+            if (className === 'flex-row-reverse') {
+                messageDiv.appendChild(textDiv);
+                messageDiv.appendChild(avatarDiv);
+            } else {
+                messageDiv.appendChild(avatarDiv);
+                messageDiv.appendChild(textDiv);
+            }
+
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function sendAll() {
+            tasks = personal_1.value;
+            if (!tasks) {
+                tasks = personal_2.value;
+                if (!tasks) return;
+            }
+            chatpane.style.display = 'block';
+            scorepane.style.display = 'block';
+            //send the construction tasks to get a scenario and the answeres as response
+
+            addMessage('Here\'s a safety scenario specially made for your current task:', '', 'S');
+
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'flex';
+
+            const avatarDiv = document.createElement('div');
+            avatarDiv.className = 'w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center mr-3';
+            avatarDiv.textContent = 'S';
+
+            const textDiv = document.createElement('div');
+            textDiv.className = 'width p-2 rounded bg-green-100 text-green-800';
             textDiv.innerHTML = '<span class="dot">•</span><span class="dot">•</span><span class="dot">•</span>';
 
             loadingDiv.appendChild(avatarDiv);
             loadingDiv.appendChild(textDiv);
             messagesDiv.appendChild(loadingDiv);
+            message_history = [];
 
-            /*messagesDiv.scrollTop = messagesDiv.scrollHeight;
-
-            messagesDiv.removeChild(loadingDiv);
-            addImage("https://oaidalleapiprodscus.blob.core.windows.net/private/org-73AbezFrFi11X95bUCL9UlrY/user-MCJ0msG7qDSOr5B4nDYV8Ji8/img-GsJjiyzTUe0HFIVdpPMK6q23.png?st=2023-11-03T17%3A46%3A43Z&amp;se=2023-11-03T19%3A46%3A43Z&amp;sp=r&amp;sv=2021-08-06&amp;sr=b&amp;rscd=inline&amp;rsct=image/png&amp;skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&amp;sktid=a48cca56-e6da-484e-a814-9c849652bcb3&amp;skt=2023-11-03T18%3A46%3A43Z&amp;ske=2023-11-04T18%3A46%3A43Z&amp;sks=b&amp;skv=2021-08-06&amp;sig=4C%2BCl0vhW/p6ZJZ3uil5PGK1w7KOO555T7D7t2rdAIs%3D", '', 'B')
-
-            loadingDiv.appendChild(avatarDiv);
-            loadingDiv.appendChild(textDiv);
-            messagesDiv.appendChild(loadingDiv);*/
-
-            messagesDiv.scrollTop = messagesDiv.scrollHeight; 
-
-            fetch('http://127.0.0.1:5011/chat_gpt4', {
+            fetch(ip + '/combinetwo', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ message: userMessage, background: bg, daily_tasks: d_tasks}),
+                body: JSON.stringify({ projects: tasks, historys: message_history}),
+                //sends construction tasks and chat history
             })
                 .then(response => {
                     if (!response.ok) {
@@ -167,17 +407,52 @@
                 })
                 .then(data => {
                     messagesDiv.removeChild(loadingDiv);
-                    addMessage(data.message, '', 'B');
+                    addMessage(data.scenario, '', 'S');
+                    current_question = data.scenario;
+                    message_history.push(current_question);
+                    contents = [data.A, data.B, data.C];
+                    addAnswer(contents, '', 'S');
+                    current_answer = data.Right_Answer;
+                    //Gets the scenario, possible answers and the correct answers from the backend
                 })
                 .catch((error) => {
                     console.error('There was an error!', error);
                 });
-            fetch('http://127.0.0.1:5011/image', {
+
+        }
+
+        function sendMessage() {
+            //adds a message to the feedback pane so that the user can chat regarding the feedback
+            const userMessage = input.value;
+            if (!userMessage) return;
+
+            addFeedback(userMessage, 'flex-row-reverse', 'U');
+
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'flex';
+
+            const avatarDiv = document.createElement('div');
+            avatarDiv.className = 'w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center mr-3';
+            avatarDiv.textContent = 'S';
+
+            const textDiv = document.createElement('div');
+            textDiv.className = 'width p-2 rounded bg-green-100 text-green-800';
+            textDiv.innerHTML = '<span class="dot">•</span><span class="dot">•</span><span class="dot">•</span>';
+            //loading screen for feedback
+
+            loadingDiv.appendChild(avatarDiv);
+            loadingDiv.appendChild(textDiv);
+            feedbackDiv.appendChild(loadingDiv);
+
+            feedbackDiv.scrollTop = messagesDiv.scrollHeight; 
+
+            fetch(ip + '/chat', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ message: userMessage, background: bg, daily_tasks: d_tasks}),
+                body: JSON.stringify({ input: userMessage, Feedback: current_feedback, scenario: prev_question}),
+                //sends the question the user asks and the prior feedback, prior scenario and the query
             })
                 .then(response => {
                     if (!response.ok) {
@@ -186,17 +461,19 @@
                     return response.json();
                 })
                 .then(data => {
-                    messageDiv.removeChild(loadingDiv);
-                    addImage(data.message, '', 'B');
+                    feedbackDiv.removeChild(loadingDiv);
+                    addFeedback(data.AI, '', 'S');
+                    //gets the feedback response and adds it to the feedback pane.
                 })
                 .catch((error) => {
-                    console.error('There was an error!', error)
+                    console.error('There was an error!', error);
                 });
 
             input.value = '';
         }
     </script>
 
+    <!--Style Scripts-->
     <style>
         .dot {
             height: 8px;
@@ -205,6 +482,12 @@
             border-radius: 50%;
             display: inline-block;
             animation: dot 1.5s infinite;
+        }
+        .width{
+            width: 800px !important;
+        }
+        html{
+            zoom: 1.25;
         }
 
         @keyframes dot {
