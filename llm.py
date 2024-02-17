@@ -57,7 +57,7 @@ You are a safety trainer. Follow these steps:
    1-d- Begin your answer with "Imagine as a construction worker, you are tasked to..."
 
 2- If History is not empty, continue the previous scenario based on the following:
-   2-a- The user's opinion regarding the first scenario is .
+   2-a- The user's opinion regarding the first scenario is {choice}.
    2-b- If the user's opinion is correct, introduce a different dangerous situation.
    2-c- If the user's opinion is incorrect, consider the user's fault and the required regulations.
    2-d- Begin your answer with "Let's continue the previous scenario..."
@@ -127,28 +127,28 @@ memory = ConversationBufferWindowMemory(k=5,memory_key='chat_history',input_key=
 memory2 = ConversationBufferWindowMemory(k=5,memory_key='chat_history',input_key='input')
 
 new1 = LLMChain(
-    llm=OpenAI(model_name="gpt-3.5-turbo-instruct", temperature=0.5, openai_api_key=openai.api_key),
-    #llm=ChatOpenAI(model_name='gpt-4', openai_api_key= openai.api_key, temperature = 0.5),
+    #llm=OpenAI(model_name="gpt-3.5-turbo-instruct", temperature=0.5, openai_api_key=openai.api_key),
+    llm=ChatOpenAI(model_name='gpt-4', openai_api_key= openai.api_key, temperature = 0.5),
     verbose=True,
     prompt = PROMPT4,
     memory=memory
 )
 new2 = LLMChain(
-    llm=OpenAI(model_name="gpt-3.5-turbo-instruct", temperature=0.1, openai_api_key=openai.api_key),
-    #llm=ChatOpenAI(model_name='gpt-4', openai_api_key= openai.api_key, temperature = 0.1),
+    #llm=OpenAI(model_name="gpt-3.5-turbo-instruct", temperature=0.1, openai_api_key=openai.api_key),
+    llm=ChatOpenAI(model_name='gpt-4', openai_api_key= openai.api_key, temperature = 0.1),
     verbose=True,
     prompt = PROMPT5
 )
 new3 = LLMChain(
-    llm=OpenAI(model_name="gpt-3.5-turbo-instruct", temperature=0.5, openai_api_key=openai.api_key),
-    #llm=ChatOpenAI(model_name='gpt-4', openai_api_key= openai.api_key, temperature = 0.5),
+    #llm=OpenAI(model_name="gpt-3.5-turbo-instruct", temperature=0.5, openai_api_key=openai.api_key),
+    llm=ChatOpenAI(model_name='gpt-4', openai_api_key= openai.api_key, temperature = 0.5),
     verbose=True,
     prompt = PROMPT6
 )
 
 new5 = LLMChain(
-    llm=OpenAI(model_name="gpt-3.5-turbo-instruct", temperature=0.5, openai_api_key=openai.api_key),
-    #llm=ChatOpenAI(model_name='gpt-4', openai_api_key= openai.api_key, temperature = 0.5),
+    #llm=OpenAI(model_name="gpt-3.5-turbo-instruct", temperature=0.5, openai_api_key=openai.api_key),
+    llm=ChatOpenAI(model_name='gpt-4', openai_api_key= openai.api_key, temperature = 0.5),
     verbose=True,
     prompt = PROMPT8,
     memory = memory2
