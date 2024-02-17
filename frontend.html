@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.3/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 font-sans">
+
+    <!-- Navigation Tab -->
+<!--    <nav class="bg-gray-800 p-4">-->
+<!--        <div class="container mx-auto flex items-center justify-between">-->
+<!--            <div class="text-white text-xl font-semibold">-->
+<!--                Chatbots-->
+<!--            </div>-->
+<!--            <ul class="flex items-center space-x-4">-->
+<!--                <li><a href="/distilgpt2_chat" class="text-white hover:text-gray-400">Chatbot with GPT-2</a></li>-->
+<!--                <li><a href="/dialo_gpt_chat" class="text-white hover:text-gray-400">Chatbot with DialoGPT</a></li>-->
+<!--                <li><a href="/" class="text-white hover:text-gray-400">Chatbot with Mistral (7B)</a></li>-->
+<!--                <li><a href="/gpt4" class="text-white hover:text-gray-400">Chatbot with GPT-4</a></li>-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--    </nav>-->
+
+    <div class="max-w-xl mx-auto my-10 bg-white rounded-lg overflow-hidden shadow-lg">
+        <div class="flex border-t p-4">
+            <input type="text" id="background_input" placeholder="Type in your personal info..." class="flex-1 p-2 border rounded mr-4">
+            <button onclick="sendBackground()" class="px-4 py-2 bg-green-500 text-white rounded">Send</button>
+        </div>
+    </div>
+
+    <div class="max-w-xl mx-auto my-15 bg-white rounded-lg overflow-hidden shadow-lg">
+        <div class="flex border-t p-4">
+            <input type="text" id="daily_input" placeholder="Type in your daily tasks..." class="flex-1 p-2 border rounded mr-4">
+            <button onclick="sendDaily()" class="px-4 py-2 bg-green-500 text-white rounded">Send</button>
+        </div>
+    </div>
+
+    <!-- Chatbot Container -->
+    <div class="max-w-xl mx-auto my-20 bg-white rounded-lg overflow-hidden shadow-lg">
+        <div class="bg-blue-500 text-white p-4 text-center text-2xl font-semibold">
+            Welcome to our Chatbot!
+        </div>
+        <div class="p-6" id="messages" style="height: 500px; overflow-y: auto;">
+            <!-- Messages will be appended here -->
+        </div>
+        <div class="flex border-t p-4">
+            <input type="text" id="input" placeholder="Type a message..." class="flex-1 p-2 border rounded mr-4">
+            <button onclick="sendMessage()" class="px-4 py-2 bg-green-500 text-white rounded">Send</button>
+        </div>
+    </div>
+
+
+    <script>
+        const messagesDiv = document.getElementById('messages');
+        const input = document.getElementById('input');
+        const background_input = document.getElementById('background_input');
+        const daily_input = document.getElementById('daily_input');
+        const bg = '';
+        const d_tasks = '';
+
+        function addMessage(content, className, avatar) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `flex my-2 ${className}`;
+
+            const avatarDiv = document.createElement('div');
+            avatarDiv.className = 'w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center mr-3';
+            avatarDiv.textContent = avatar;
+
+            const textDiv = document.createElement('div');
+            textDiv.className = 'p-2 rounded bg-blue-100 text-blue-800';
+            textDiv.textContent = content;
+
+            if (className === 'flex-row-reverse') {
+                messageDiv.appendChild(textDiv);
+                messageDiv.appendChild(avatarDiv);
+            } else {
+                messageDiv.appendChild(avatarDiv);
+                messageDiv.appendChild(textDiv);
+            }
+
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function addImage(content, className, avatar) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `flex my-2 ${className}`;
+
+            const avatarDiv = document.createElement('div');
+            avatarDiv.className = 'w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center mr-3';
+            avatarDiv.textContent = avatar;
+
+            const imgDiv = document.createElement('img');
+            imgDiv.className = 'p-2 rounded bg-blue-100';
+            imgDiv.src = content;
+
+            messageDiv.appendChild(avatarDiv);
+            messageDiv.appendChild(imgDiv);
+
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function sendBackground() {
+            const userMessage = background_input.value;
+            if (!userMessage) return;
+
+            bg = userMessage
+        }
+
+        function sendDaily() {
+            const userMessage = daily_input.value;
+            if (!userMessage) return;
+
+            d_tasks = userMessage
+        }
+
+        function sendMessage() {
+            const userMessage = input.value;
+            if (!userMessage) return;
+
+            addMessage(userMessage, 'flex-row-reverse', 'U');
+
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'flex';
+
+            const avatarDiv = document.createElement('div');
+            avatarDiv.className = 'w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center mr-3';
+            avatarDiv.textContent = 'B';
+
+            const textDiv = document.createElement('div');
+            textDiv.className = 'p-2 rounded bg-green-100 text-green-800';
+            textDiv.innerHTML = '<span class="dot">•</span><span class="dot">•</span><span class="dot">•</span>';
+
+            loadingDiv.appendChild(avatarDiv);
+            loadingDiv.appendChild(textDiv);
+            messagesDiv.appendChild(loadingDiv);
+
+            /*messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+            messagesDiv.removeChild(loadingDiv);
+            addImage("https://oaidalleapiprodscus.blob.core.windows.net/private/org-73AbezFrFi11X95bUCL9UlrY/user-MCJ0msG7qDSOr5B4nDYV8Ji8/img-GsJjiyzTUe0HFIVdpPMK6q23.png?st=2023-11-03T17%3A46%3A43Z&amp;se=2023-11-03T19%3A46%3A43Z&amp;sp=r&amp;sv=2021-08-06&amp;sr=b&amp;rscd=inline&amp;rsct=image/png&amp;skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&amp;sktid=a48cca56-e6da-484e-a814-9c849652bcb3&amp;skt=2023-11-03T18%3A46%3A43Z&amp;ske=2023-11-04T18%3A46%3A43Z&amp;sks=b&amp;skv=2021-08-06&amp;sig=4C%2BCl0vhW/p6ZJZ3uil5PGK1w7KOO555T7D7t2rdAIs%3D", '', 'B')
+
+            loadingDiv.appendChild(avatarDiv);
+            loadingDiv.appendChild(textDiv);
+            messagesDiv.appendChild(loadingDiv);*/
+
+            messagesDiv.scrollTop = messagesDiv.scrollHeight; 
+
+            fetch('http://127.0.0.1:5011/chat_gpt4', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: userMessage, background: bg, daily_tasks: d_tasks}),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    messagesDiv.removeChild(loadingDiv);
+                    addMessage(data.message, '', 'B');
+                })
+                .catch((error) => {
+                    console.error('There was an error!', error);
+                });
+            fetch('http://127.0.0.1:5011/image', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: userMessage, background: bg, daily_tasks: d_tasks}),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    messageDiv.removeChild(loadingDiv);
+                    addImage(data.message, '', 'B');
+                })
+                .catch((error) => {
+                    console.error('There was an error!', error)
+                });
+
+            input.value = '';
+        }
+    </script>
+
+    <style>
+        .dot {
+            height: 8px;
+            width: 8px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            animation: dot 1.5s infinite;
+        }
+
+        @keyframes dot {
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+        }
+    </style>
+
+</body>
+
+</html>
