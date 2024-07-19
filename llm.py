@@ -1,4 +1,4 @@
-import cv2
+#import cv2
 import openai
 from langchain.vectorstores import Chroma
 import os
